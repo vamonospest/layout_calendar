@@ -1,3 +1,60 @@
+$boxSize: 100px;
+$borderSize: 1px;
+$daysCount: 7;
+$days: ("mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "sun": 6);
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+}
+
 body {
   margin: 0;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+
+  max-width: ($boxSize + $borderSize) * $daysCount;
+  margin-top: 25px;
+  
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: $boxSize;
+    width: $boxSize;
+    margin: 0 $borderSize $borderSize 0;
+    background-color: #eee;
+    border: 1px solid #000;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-20px);
+      background-color: pink;
+    }
+  }
+}
+
+@for $i from 1 through 31 {
+  .calendar > div:nth-child(#{$i})::before {
+    content: "#{$i}";
+  }
+}
+
+@each $day, $number in $days {
+  .calendar-#{$day} > div:first-child {
+    margin-left: $number * ($boxSize + $borderSize);
+  }
+}
+
+@for $i from 28 through 30 {
+  .calendar-#{$i} > div:nth-child(n+#{$i+1}) {
+    display: none;
+  }
 }
